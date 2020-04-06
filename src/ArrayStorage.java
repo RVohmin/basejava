@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.Objects;
-
 /**
  * Array based storage for Resumes
  */
@@ -10,21 +7,15 @@ public class ArrayStorage {
 
     void clear() {
         for (int i = 0; i < count; i++) {
-            if (storage[i] == null) {
-                break;
-            }
             storage[i] = null;
         }
         count = 0;
     }
 
     void save(Resume resume) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = resume;
-                count++;
-                break;
-            }
+        if (count < storage.length - 1) {
+            storage[count] = resume;
+            count++;
         }
     }
 
