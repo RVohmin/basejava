@@ -13,7 +13,7 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        if (count < storage.length - 1) {
+        if (count < storage.length) {
             storage[count] = resume;
             count++;
         }
