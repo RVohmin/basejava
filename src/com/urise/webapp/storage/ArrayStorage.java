@@ -1,3 +1,7 @@
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -14,7 +18,7 @@ public class ArrayStorage {
      */
     private boolean checkPresent(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return true;
             }
         }
@@ -24,7 +28,7 @@ public class ArrayStorage {
     /**
      * clearing storage of resume.
      */
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, null);
         size = 0;
     }
@@ -34,9 +38,9 @@ public class ArrayStorage {
      * @param resume - new version resume.
      */
     public void update(Resume resume) {
-        if (checkPresent(resume.toString())) {
+        if (checkPresent(resume.getUuid())) {
             for (int i = 0; i < size; i++) {
-                if (storage[i].equals(resume)) {
+                if (storage[i].getUuid().equals(resume.getUuid())) {
                     storage[i] = resume;
                 }
             }
@@ -49,13 +53,13 @@ public class ArrayStorage {
      * Save new resume to storage.
      * @param resume - new resume.
      */
-    void save(Resume resume) {
-        if (!checkPresent(resume.toString())) {
+    public void save(Resume resume) {
+        if (!checkPresent(resume.getUuid())) {
             if (size < storage.length) {
                 storage[size] = resume;
                 size++;
             } else {
-                System.out.println("Error: Resume cannot be saved - storage is full");
+                System.out.println("Error: com.urise.webapp.model.Resume cannot be saved - storage is full");
             }
         } else {
             System.out.println("Error: Such resume is exist, use update() method");
@@ -65,12 +69,12 @@ public class ArrayStorage {
     /**
      * get resume from storage.
      * @param uuid - uuid resume.
-     * @return - Resume if it exist in storage.
+     * @return - com.urise.webapp.model.Resume if it exist in storage.
      */
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         if (checkPresent(uuid)) {
             for (int i = 0; i < size; i++) {
-                if (storage[i].uuid.equals(uuid)) {
+                if (storage[i].getUuid().equals(uuid)) {
                     return storage[i];
                 }
             }
@@ -84,10 +88,10 @@ public class ArrayStorage {
      * delete resume from storage if it exist in storage.
      * @param uuid - uuid resume.
      */
-    void delete(String uuid) {
+    public void delete(String uuid) {
         if (checkPresent(uuid)) {
             for (int i = 0; i < size; i++) {
-                if (storage[i].toString().equals(uuid)) {
+                if (storage[i].getUuid().equals(uuid)) {
                     System.arraycopy(storage, i + 1, storage, i, size - i - 1);
                     size--;
                     break;
@@ -101,14 +105,14 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
     /**
      * @return size of storage (quantity of resumes)
      */
-    int size() {
+    public int size() {
         return size;
     }
 }
