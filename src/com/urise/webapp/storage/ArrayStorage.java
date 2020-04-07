@@ -19,17 +19,26 @@ public class ArrayStorage {
         size = 0;
     }
 
+    private Integer find(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
     /**
      * Method replaced resume
      *
      * @param resume - new version resume.
      */
     public void update(Resume resume) {
-        Resume temp = this.get(resume.getUuid());
-        if (temp != null) {
-            storage[Arrays.asList(storage).indexOf(temp)] = resume;
+        Integer pos = find(resume.getUuid());
+        if (pos != null) {
+            storage[pos] = resume;
         } else {
-            System.out.println("Error: resume with such uuid absent");
+            System.out.println("Error: resume with such uuid absent in storage");
         }
     }
 
@@ -39,7 +48,8 @@ public class ArrayStorage {
      * @param resume - new resume.
      */
     public void save(Resume resume) {
-        if ((get(resume.getUuid()) == null) && (size < storage.length)) {
+        Integer pos = find(resume.getUuid());
+        if ((pos == null) && (size < storage.length)) {
             storage[size] = resume;
             size++;
         } else {
@@ -55,12 +65,8 @@ public class ArrayStorage {
      * @return - com.urise.webapp.model.Resume if it exist in storage.
      */
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
-        }
-        return null;
+        Integer pos = find(uuid);
+        return pos != null ? storage[pos] : null;
     }
 
     /**
@@ -69,10 +75,9 @@ public class ArrayStorage {
      * @param uuid - uuid resume.
      */
     public void delete(String uuid) {
-        Resume temp = get(uuid);
+        Integer temp = find(uuid);
         if (temp != null) {
-            int index = Arrays.asList(storage).indexOf(temp);
-            storage[index] = storage[size - 1];
+            storage[temp] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {

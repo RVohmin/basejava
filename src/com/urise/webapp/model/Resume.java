@@ -22,5 +22,4 @@ public class Resume {
     public String toString() {
         return uuid;
     }
-
 }
