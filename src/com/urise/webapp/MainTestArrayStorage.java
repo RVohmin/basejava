@@ -1,3 +1,5 @@
+package com.urise.webapp;
+
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
 
@@ -31,7 +33,11 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.delete(r1.getUuid());
         printAll();
 
-        r4.setUuid("update");
+        Resume r5 = new Resume();
+        r5.setUuid("uuid4");
+        ARRAY_STORAGE.update(r5);
+        System.out.println(!r4.equals(ARRAY_STORAGE.get("uuid4"))
+                + " - если true замена прошла успешно, ссылки на разные объекты в памяти");
         printAll();
 
         ARRAY_STORAGE.clear();
