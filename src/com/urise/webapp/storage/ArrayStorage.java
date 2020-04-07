@@ -60,7 +60,6 @@ public class ArrayStorage {
                 return storage[i];
             }
         }
-        System.out.printf("Error: resume with uuid \"%s\" is absent in storage \n", uuid);
         return null;
     }
 
