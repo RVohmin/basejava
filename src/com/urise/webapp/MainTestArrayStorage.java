@@ -36,8 +36,12 @@ public class MainTestArrayStorage {
         Resume r5 = new Resume();
         r5.setUuid("uuid4");
         ARRAY_STORAGE.update(r5);
-        System.out.println(!r4.equals(ARRAY_STORAGE.get("uuid4"))
-                + " - если true замена прошла успешно, ссылки на разные объекты в памяти");
+        if (!r4.equals(ARRAY_STORAGE.get("uuid4"))) {
+            System.out.println("Замена прошла успешно, ссылки на разные объекты в памяти");
+        } else {
+            System.out.println("метод update работает некорректно");
+        }
+
         printAll();
 
         ARRAY_STORAGE.clear();
