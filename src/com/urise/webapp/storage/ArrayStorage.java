@@ -73,7 +73,8 @@ public class ArrayStorage {
         Resume temp = get(uuid);
         if (temp != null) {
             int index = Arrays.asList(storage).indexOf(temp);
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
         } else {
             System.out.println("Error: there isn't resume with such uuid");
