@@ -1,14 +1,15 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
+import com.urise.webapp.storage.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final Storage ARRAY_STORAGE = new ArrayStorage();
+    private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+//    private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume();
@@ -37,10 +38,10 @@ public class MainTestArrayStorage {
         Resume r5 = new Resume();
         r5.setUuid("uuid4");
         ARRAY_STORAGE.update(r5);
-        if (!r4.equals(ARRAY_STORAGE.get("uuid4"))) {
+        if (!(r4 == ARRAY_STORAGE.get("uuid4"))) {
             System.out.println("Замена прошла успешно, ссылки на разные объекты в памяти");
         } else {
-            System.out.println("метод update работает некорректно");
+            System.out.println("метод update работает некорректно !!!");
         }
 
         printAll();

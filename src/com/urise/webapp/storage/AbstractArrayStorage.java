@@ -2,6 +2,8 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * basejava com.urise.webapp.storage.AbstractArrayStorage
  *
@@ -14,6 +16,73 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+
+    /**
+     * clearing storage of resume.
+     */
+    @Override
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
+    /**
+     * Method replaced resume
+     *
+     * @param resume - new version resume.
+     */
+    @Override
+    public void update(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (index == -1) {
+            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
+        } else {
+            storage[index] = resume;
+        }
+    }
+
+    /**
+     * Save new resume to storage.
+     *
+     * @param resume - new resume.
+     */
+    @Override
+    public void save(Resume resume) {
+        if (findIndex(resume.getUuid()) >= 0) {
+            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Error: storage is full\n");
+        } else {
+            storage[size] = resume;
+            size++;
+//            Arrays.sort(storage, 0, size); // на случай если добавим резюме с uuid который должен быть в начале массива
+        }
+    }
+
+    /**
+     * delete resume from storage if it exist in storage.
+     *
+     * @param uuid - uuid resume.
+     */
+    @Override
+    public void delete(String uuid) {
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
+        } else {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            storage[size] = null;
+            size--;
+        }
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    @Override
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
 
     /**
      * @return size of storage (quantity of resumes)
