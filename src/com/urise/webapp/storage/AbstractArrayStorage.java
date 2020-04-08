@@ -48,14 +48,17 @@ public abstract class AbstractArrayStorage implements Storage {
      */
     @Override
     public void save(Resume resume) {
-        if (findIndex(resume.getUuid()) >= 0) {
+        int index = findIndex(resume.getUuid());
+        if (index >= 0) {
             System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
         } else if (size >= STORAGE_LIMIT) {
             System.out.println("Error: storage is full\n");
         } else {
-            storage[size] = resume;
+            index = -(index + 1);
+            System.out.println(index);
+            System.arraycopy(storage, index, storage, index + 1, size - index);
+            storage[index] = resume;
             size++;
-//            Arrays.sort(storage, 0, size); // на случай если добавим резюме с uuid который должен быть в начале массива
         }
     }
 
