@@ -7,10 +7,8 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes.
  */
-public class ArrayStorage implements Storage {
-    private static final int STORAGE_LIMIT = 10_000;
-    private final Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
+public class ArrayStorage extends AbstractArrayStorage {
+
 
     /**
      * clearing storage of resume.
@@ -54,22 +52,6 @@ public class ArrayStorage implements Storage {
     }
 
     /**
-     * get resume from storage.
-     *
-     * @param uuid - uuid resume.
-     *
-     * @return - com.urise.webapp.model.Resume if it exist in storage.
-     */
-    @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", uuid);
-        }
-        return index != -1 ? storage[index] : null;
-    }
-
-    /**
      * delete resume from storage if it exist in storage.
      *
      * @param uuid - uuid resume.
@@ -94,15 +76,7 @@ public class ArrayStorage implements Storage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    /**
-     * @return size of storage (quantity of resumes)
-     */
-    @Override
-    public int size() {
-        return size;
-    }
-
-    private int findIndex(String uuid) {
+    protected int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
