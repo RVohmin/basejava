@@ -19,24 +19,15 @@ public class ArrayStorage {
         size = 0;
     }
 
-    private int find(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     /**
      * Method replaced resume
      *
      * @param resume - new version resume.
      */
     public void update(Resume resume) {
-        int pos = find(resume.getUuid());
-        if (pos != -1) {
-            storage[pos] = resume;
+        int index = findIndex(resume.getUuid());
+        if (index != -1) {
+            storage[index] = resume;
         } else {
             System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
         }
@@ -48,8 +39,8 @@ public class ArrayStorage {
      * @param resume - new resume.
      */
     public void save(Resume resume) {
-        int pos = find(resume.getUuid());
-        if ((pos == -1) && (size < storage.length)) {
+        int index = findIndex(resume.getUuid());
+        if ((index == -1) && (size < storage.length)) {
             storage[size] = resume;
             size++;
         } else {
@@ -65,11 +56,11 @@ public class ArrayStorage {
      * @return - com.urise.webapp.model.Resume if it exist in storage.
      */
     public Resume get(String uuid) {
-        int pos = find(uuid);
-        if (pos == -1) {
+        int index = findIndex(uuid);
+        if (index == -1) {
             System.out.printf("Error: absent resume with such uuid - \"%s\"\n", uuid);
         }
-        return pos != -1 ? storage[pos] : null;
+        return index != -1 ? storage[index] : null;
     }
 
     /**
@@ -78,7 +69,7 @@ public class ArrayStorage {
      * @param uuid - uuid resume.
      */
     public void delete(String uuid) {
-        int index = find(uuid);
+        int index = findIndex(uuid);
         if (index != -1) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
@@ -86,6 +77,15 @@ public class ArrayStorage {
         } else {
             System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
         }
+    }
+
+    private int findIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
