@@ -8,7 +8,8 @@ import java.util.Arrays;
  * Array based storage for Resumes.
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10_000];
+    private static final int STORAGE_LIMIT = 10_000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     /**
@@ -26,10 +27,10 @@ public class ArrayStorage {
      */
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-        } else {
+        if (index == -1) {
             System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
+        } else {
+            storage[index] = resume;
         }
     }
 
@@ -39,12 +40,13 @@ public class ArrayStorage {
      * @param resume - new resume.
      */
     public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if ((index == -1) && (size < storage.length)) {
+        if (findIndex(resume.getUuid()) != -1) {
+            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Error: storage is full\n");
+        } else {
             storage[size] = resume;
             size++;
-        } else {
-            System.out.printf("Error: resume \"%s\" is exist, use update() method, or storage is full\n", resume.getUuid());
         }
     }
 
@@ -70,12 +72,12 @@ public class ArrayStorage {
      */
     public void delete(String uuid) {
         int index = findIndex(uuid);
-        if (index != -1) {
+        if (index == -1) {
+            System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
+        } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-        } else {
-            System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
         }
     }
 
@@ -92,7 +94,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     /**
