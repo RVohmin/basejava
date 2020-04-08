@@ -19,13 +19,13 @@ public class ArrayStorage {
         size = 0;
     }
 
-    private Integer find(String uuid) {
+    private int find(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
-        return null;
+        return -1;
     }
 
     /**
@@ -34,11 +34,11 @@ public class ArrayStorage {
      * @param resume - new version resume.
      */
     public void update(Resume resume) {
-        Integer pos = find(resume.getUuid());
-        if (pos != null) {
+        int pos = find(resume.getUuid());
+        if (pos != -1) {
             storage[pos] = resume;
         } else {
-            System.out.println("Error: resume with such uuid absent in storage");
+            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
         }
     }
 
@@ -48,12 +48,12 @@ public class ArrayStorage {
      * @param resume - new resume.
      */
     public void save(Resume resume) {
-        Integer pos = find(resume.getUuid());
-        if ((pos == null) && (size < storage.length)) {
+        int pos = find(resume.getUuid());
+        if ((pos == -1) && (size < storage.length)) {
             storage[size] = resume;
             size++;
         } else {
-            System.out.println("Error: Such resume is exist, use update() method, or storage is full");
+            System.out.printf("Error: resume \"%s\" is exist, use update() method, or storage is full\n", resume.getUuid());
         }
     }
 
@@ -65,8 +65,11 @@ public class ArrayStorage {
      * @return - com.urise.webapp.model.Resume if it exist in storage.
      */
     public Resume get(String uuid) {
-        Integer pos = find(uuid);
-        return pos != null ? storage[pos] : null;
+        int pos = find(uuid);
+        if (pos == -1) {
+            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", uuid);
+        }
+        return pos != -1 ? storage[pos] : null;
     }
 
     /**
@@ -75,13 +78,13 @@ public class ArrayStorage {
      * @param uuid - uuid resume.
      */
     public void delete(String uuid) {
-        Integer temp = find(uuid);
-        if (temp != null) {
-            storage[temp] = storage[size - 1];
+        int index = find(uuid);
+        if (index != -1) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Error: there isn't resume with such uuid");
+            System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
         }
     }
 
