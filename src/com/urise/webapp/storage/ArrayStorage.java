@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes.
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage {
     private static final int STORAGE_LIMIT = 10_000;
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
@@ -15,6 +15,7 @@ public class ArrayStorage {
     /**
      * clearing storage of resume.
      */
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -25,6 +26,7 @@ public class ArrayStorage {
      *
      * @param resume - new version resume.
      */
+    @Override
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index == -1) {
@@ -39,6 +41,7 @@ public class ArrayStorage {
      *
      * @param resume - new resume.
      */
+    @Override
     public void save(Resume resume) {
         if (findIndex(resume.getUuid()) != -1) {
             System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
@@ -57,6 +60,7 @@ public class ArrayStorage {
      *
      * @return - com.urise.webapp.model.Resume if it exist in storage.
      */
+    @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index == -1) {
@@ -70,6 +74,7 @@ public class ArrayStorage {
      *
      * @param uuid - uuid resume.
      */
+    @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index == -1) {
@@ -81,18 +86,10 @@ public class ArrayStorage {
         }
     }
 
-    private int findIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -100,7 +97,17 @@ public class ArrayStorage {
     /**
      * @return size of storage (quantity of resumes)
      */
+    @Override
     public int size() {
         return size;
+    }
+
+    private int findIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
