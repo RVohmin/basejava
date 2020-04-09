@@ -8,14 +8,13 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void specDelete(int index) {
-        storage[index] = storage[size - 1];
-        storage[size - 1] = null;
+    public void doSave(int index, Resume resume) {
+        storage[size] = resume;
     }
 
     @Override
-    public void specSave(int index, Resume resume) {
-        storage[size] = resume;
+    public void doDelete(int index) {
+        storage[index] = storage[size - 1];
     }
 
     protected int findIndex(String uuid) {
