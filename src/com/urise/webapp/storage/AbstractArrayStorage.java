@@ -34,14 +34,30 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
-        if (index == -1) {
+        if (index < 0) {
             System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
         } else {
             storage[index] = resume;
         }
     }
 
-    public abstract void save(Resume resume);
+    /**
+     * Save new resume to storage.
+     *
+     * @param resume - new resume.
+     */
+    @Override
+    public void save(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (index >= 0) {
+            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Error: storage is full\n");
+        }
+        specSave(index, resume);
+        size++;
+    }
+
     /**
      * delete resume from storage if it exist in storage.
      *
@@ -50,13 +66,11 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
-        } else {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-            storage[size] = null;
-            size--;
         }
+        specDelete(index);
+        size--;
     }
 
     /**
@@ -90,6 +104,10 @@ public abstract class AbstractArrayStorage implements Storage {
         }
         return index != -1 ? storage[index] : null;
     }
+
+    public abstract void specDelete(int index);
+
+    public abstract void specSave(int index, Resume resume);
 
     protected abstract int findIndex(String uuid);
 }

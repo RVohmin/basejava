@@ -7,22 +7,15 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    /**
-     * Save new resume to storage.
-     *
-     * @param resume - new resume.
-     */
     @Override
-    public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Error: storage is full\n");
-        } else {
-            storage[size] = resume;
-            size++;
-        }
+    public void specDelete(int index) {
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+    }
+
+    @Override
+    public void specSave(int index, Resume resume) {
+        storage[size] = resume;
     }
 
     protected int findIndex(String uuid) {
