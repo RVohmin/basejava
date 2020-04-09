@@ -41,27 +41,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    /**
-     * Save new resume to storage.
-     *
-     * @param resume - new resume.
-     */
-    @Override
-    public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Error: storage is full\n");
-        } else {
-            index = -(index + 1);
-            System.out.println(index);
-            System.arraycopy(storage, index, storage, index + 1, size - index);
-            storage[index] = resume;
-            size++;
-        }
-    }
-
+    public abstract void save(Resume resume);
     /**
      * delete resume from storage if it exist in storage.
      *

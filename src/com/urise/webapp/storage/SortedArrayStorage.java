@@ -13,6 +13,26 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+    /**
+     * Save new resume to storage.
+     *
+     * @param resume - new resume.
+     */
+    @Override
+    public void save(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (index >= 0) {
+            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Error: storage is full\n");
+        } else {
+            index = -(index + 1);
+            System.arraycopy(storage, index, storage, index + 1, size - index);
+            storage[index] = resume;
+            size++;
+        }
+    }
+
     @Override
     protected int findIndex(String uuid) {
         Resume searchKey = new Resume();
