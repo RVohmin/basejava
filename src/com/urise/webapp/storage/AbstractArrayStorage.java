@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -35,7 +38,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
-            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -50,9 +53,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.printf("Error: resume \"%s\" is exist, use update() method\n", resume.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Error: storage is full\n");
+            throw new StorageException("Error: storage is full", resume.getUuid());
         }
         doSave(index, resume);
         size++;
@@ -67,7 +70,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.printf("Error: there isn't resume with such uuid - \"%s\"\n", uuid);
+            throw new NotExistStorageException(uuid);
         }
         doDelete(index);
         storage[size - 1] = null;
@@ -100,10 +103,10 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.printf("Error: absent resume with such uuid - \"%s\"\n", uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
-        return index != -1 ? storage[index] : null;
+        return storage[index];
     }
 
     public abstract void doDelete(int index);

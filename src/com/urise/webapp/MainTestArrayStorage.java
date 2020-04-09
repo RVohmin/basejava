@@ -13,14 +13,10 @@ public class MainTestArrayStorage {
 //    private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        final Resume r1 = new Resume();
-        r1.setUuid("uuid1");
-        final Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        final Resume r3 = new Resume();
-        r3.setUuid("uuid3");
-        Resume r4 = new Resume();
-        r4.setUuid("uuid4");
+        final Resume r1 = new Resume("uuid1");
+        final Resume r2 = new Resume("uuid2");
+        final Resume r3 = new Resume("uuid3");
+        Resume r4 = new Resume("uuid4");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -37,13 +33,11 @@ public class MainTestArrayStorage {
         printAll();
         System.out.println("------------------------------" + r2.getUuid() + " deleted");
 
-        Resume r6 = new Resume();
-        r6.setUuid("uuid2");
+        Resume r6 = new Resume("uuid2");
         ARRAY_STORAGE.save(r6);
         printAll();
 
-        Resume r5 = new Resume();
-        r5.setUuid("uuid4");
+        Resume r5 = new Resume("uuid4");
         ARRAY_STORAGE.update(r5);
         if (!(r4 == ARRAY_STORAGE.get("uuid4"))) {
             System.out.println("Замена прошла успешно, ссылки на разные объекты в памяти");
@@ -58,6 +52,7 @@ public class MainTestArrayStorage {
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
+
     static void printAll() {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAll()) {
