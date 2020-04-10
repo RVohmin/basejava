@@ -55,11 +55,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void whenStorageFullThenException() {
-        storage.clear();
-        for (int i = 0; i <= 9999; i++) {
-            storage.save(new Resume("uuid" + i));
+        try {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException ex) {
+            Assert.fail();
         }
-        storage.save(new Resume("name"));
+        storage.save(new Resume());
     }
 
     @Test
