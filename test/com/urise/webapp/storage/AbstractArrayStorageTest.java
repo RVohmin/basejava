@@ -37,9 +37,9 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void update() {
         Resume resume = new Resume("uuid2");
-        assertNotSame(resume, storage.get("uuid2"));
+        assertNotSame(resume, storage.get(UUID_2));
         storage.update(resume);
-        assertEquals(resume, storage.get("uuid2"));
+        assertEquals(resume, storage.get(UUID_2));
     }
 
     @Test
