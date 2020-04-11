@@ -24,16 +24,6 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume resume) {
-        if (listStorage.contains(resume)) {
-            int index = listStorage.indexOf(resume);
-            listStorage.set(index, resume);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-    }
-
-    @Override
     protected void doUpdate(int index, Resume resume) {
         listStorage.set(index, resume);
     }
@@ -41,16 +31,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Resume doGet(int index) {
         return listStorage.get(index);
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        for (Resume item : listStorage) {
-            if (item.getUuid().equals(uuid)) {
-                return item;
-            }
-        }
-        throw new NotExistStorageException(uuid);
     }
 
     @Override
@@ -69,7 +49,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void checkException(Resume resume) {}
+    protected void checkException(Resume resume) {
+    }
 
     @Override
     protected void doSave(int index, Resume resume) {
