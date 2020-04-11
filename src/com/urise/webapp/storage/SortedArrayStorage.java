@@ -14,19 +14,15 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void doSave(int index, Resume resume) {
+    public void doInsert(int index, Resume resume) {
         index = -(index + 1);
         System.arraycopy(storage, index, storage, index + 1, size - index);
         storage[index] = resume;
-        size++;
-
     }
 
     @Override
-    public void doDelete(int index) {
+    public void doDeleteElement(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-        storage[size - 1] = null;
-        size--;
     }
 
     @Override
