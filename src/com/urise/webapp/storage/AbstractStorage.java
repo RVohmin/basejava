@@ -28,7 +28,7 @@ public abstract class AbstractStorage implements Storage {
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        doDelete(index);
+        doDelete(index, uuid);
     }
 
     @Override
@@ -46,14 +46,14 @@ public abstract class AbstractStorage implements Storage {
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        return doGet(index);
+        return doGet(index, uuid);
     }
 
-    protected abstract Resume doGet(int index);
+    protected abstract Resume doGet(int index, String uuid);
 
     protected abstract void doUpdate(int index, Resume resume);
 
-    protected abstract void doDelete(int index);
+    protected abstract void doDelete(int index, String uuid);
 
     protected abstract void doSave(int index, Resume resume);
 

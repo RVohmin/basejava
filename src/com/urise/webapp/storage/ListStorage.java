@@ -26,12 +26,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(int index) {
+    protected Resume doGet(int index, String uuid) {
         return listStorage.get(index);
     }
 
     @Override
-    protected void doDelete(int index) {
+    protected void doDelete(int index, String uuid) {
         listStorage.remove(index);
     }
 
@@ -52,12 +52,11 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int findIndex(String uuid) {
-        int index = -1;
         for (int i = 0; i < listStorage.size(); i++) {
             if (listStorage.get(i).getUuid().equals(uuid)) {
-                index = i;
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 }
