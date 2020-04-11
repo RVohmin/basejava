@@ -49,7 +49,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void whenSaveExistResumeThenException() {
+    public void whenSaveExistResumeThenExistStorageException() {
         storage.save(new Resume(UUID_1));
     }
 

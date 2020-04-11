@@ -30,54 +30,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     /**
-     * Method replaced resume
-     *
-     * @param resume - new version resume.
-     */
-    @Override
-    public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
-    }
-
-    /**
-     * Save new resume to storage.
-     *
-     * @param resume - new resume.
-     */
-    @Override
-    public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Error: storage is full", resume.getUuid());
-        }
-        doSave(index, resume);
-        size++;
-    }
-
-    /**
-     * delete resume from storage if it exist in storage.
-     *
-     * @param uuid - uuid resume.
-     */
-    @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        doDelete(index);
-        storage[size - 1] = null;
-        size--;
-    }
-
-    /**
      * @return array, contains only Resumes in storage (without null)
      */
     @Override
@@ -93,19 +45,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    /**
-     * get resume from storage.
-     *
-     * @param uuid - uuid resume.
-     *
-     * @return - com.urise.webapp.model.Resume if it exist in storage.
-     */
     @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
+    protected void checkException(Resume resume) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Error: storage is full", resume.getUuid());
         }
+    }
+
+    @Override
+    protected void doUpdate(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    @Override
+    protected Resume doGet(int index) {
         return storage[index];
     }
 

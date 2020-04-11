@@ -34,12 +34,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume resume) {
-        if (!listStorage.contains(resume)) {
-            listStorage.add(resume);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+    protected void doUpdate(int index, Resume resume) {
+        listStorage.set(index, resume);
+    }
+
+    @Override
+    protected Resume doGet(int index) {
+        return listStorage.get(index);
     }
 
     @Override
@@ -53,15 +54,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        Iterator<Resume> iterator = listStorage.listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getUuid().equals(uuid)) {
-                iterator.remove();
-                return;
-            }
-        }
-        throw new NotExistStorageException(uuid);
+    protected void doDelete(int index) {
+        listStorage.remove(index);
     }
 
     @Override
@@ -74,6 +68,22 @@ public class ListStorage extends AbstractStorage {
         return listStorage.size();
     }
 
+    @Override
+    protected void checkException(Resume resume) {}
 
+    @Override
+    protected void doSave(int index, Resume resume) {
+        listStorage.add(resume);
+    }
 
+    @Override
+    protected int findIndex(String uuid) {
+        int index = listStorage.indexOf(new Resume(uuid));
+        for (Resume item : listStorage) {
+            if (item.getUuid().equals(uuid)) {
+                index = listStorage.indexOf(item);
+            }
+        }
+        return index;
+    }
 }
