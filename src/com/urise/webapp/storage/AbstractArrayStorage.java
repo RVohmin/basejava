@@ -69,8 +69,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return storage[index];
     }
 
-//    public abstract void doDelete(int index);
-
     protected abstract void doInsert(int Index, Resume resume);
 
     protected abstract void doDeleteElement(int index);
