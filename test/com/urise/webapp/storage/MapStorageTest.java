@@ -20,6 +20,6 @@ public class MapStorageTest extends AbstractStorageTest {
         Resume[] result = storage.getAll();
         Arrays.sort(result);
         assertArrayEquals(expexted, result);
-        assertEquals(expexted.length, storage.getAll().length);
+        assertEquals(expexted.length, storage.size());
     }
 }
