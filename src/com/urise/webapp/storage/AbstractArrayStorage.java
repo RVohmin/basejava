@@ -28,50 +28,50 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(int index, Resume resume) {
+    public void doSave(Resume resume, Object index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage is full", resume.getUuid());
+        } else {
+            doInsert(resume, (Integer) index);
+            size++;
         }
-        doInsert(index, resume);
-        size++;
     }
 
     @Override
-    public void doDelete(int index, String uuid) {
-        doDeleteElement(index);
+    public void doDelete(Object index) {
+        doDeleteElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
+    @Override
+    protected void doUpdate(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return storage[(Integer) searchKey];
+    }
+
     @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    /**
-     * @return size of storage (quantity of resumes)
-     */
     @Override
     public int size() {
         return size;
     }
 
     @Override
-    protected void doUpdate(int index, Resume resume) {
-        storage[index] = resume;
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
-    @Override
-    protected Resume doGet(int index, String uuid) {
-        return storage[index];
-    }
-
-    protected abstract void doInsert(int Index, Resume resume);
+    protected abstract void doInsert(Resume resume, int index);
 
     protected abstract void doDeleteElement(int index);
 
-    protected abstract int findIndex(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }
