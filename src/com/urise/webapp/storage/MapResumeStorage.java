@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +45,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = Arrays.asList(mapStorage.values().toArray(new Resume[0]));
-        list.sort(compareUuid.thenComparing(compareFullName));
-        return list;
+    public List<Resume> getList() {
+        return new ArrayList<>(mapStorage.values());
     }
 
     @Override
