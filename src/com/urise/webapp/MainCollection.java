@@ -1,11 +1,11 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.Storage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * basejava com.urise.webapp.MainCollection
@@ -36,6 +36,10 @@ public class MainCollection {
 
         collection.removeIf(resume -> resume.getUuid().equals(UUID_1));
         collection.forEach(System.out::println);
+
+        List<Resume> resumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        resumes.remove(1);
+        System.out.println(resumes);
     }
 
 }
