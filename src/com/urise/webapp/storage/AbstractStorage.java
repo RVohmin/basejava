@@ -15,8 +15,7 @@ import java.util.List;
  * @since 10.04.2020 21:35
  */
 public abstract class AbstractStorage implements Storage {
-    protected Comparator<Resume> uuidComparator = Comparator.comparing(Resume::getUuid);
-    protected Comparator<Resume> fullNameComparator = Comparator.comparing(Resume::getFullName);
+    protected Comparator<Resume> uuidComparator = Comparator.comparing(Resume::getUuid).thenComparing(Resume::getFullName);
 
     protected abstract Object getSearchKey(String uuid);
 
@@ -59,7 +58,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getList();
-        list.sort(uuidComparator.thenComparing(fullNameComparator));
+        list.sort(uuidComparator);
         return list;
     }
 
