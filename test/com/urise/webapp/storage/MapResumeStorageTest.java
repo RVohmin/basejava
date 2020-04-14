@@ -15,7 +15,7 @@ public class MapResumeStorageTest extends AbstractStorageTest {
 
     @Test
     public void getAll() {
-        List<Resume> expexted = List.of(new Resume("uuid1", "Ivan Petrov"), new Resume("uuid2", "Alex Ivanov"), new Resume("uuid3", "Bob Marley"));
+        List<Resume> expexted = List.of(new Resume("uuid2", "Alex Ivanov"), new Resume("uuid3", "Bob Marley"), new Resume("uuid1", "Ivan Petrov"));
         List<Resume> result = storage.getAllSorted();
         assertEquals(expexted, result);
         assertEquals(expexted.size(), storage.size());

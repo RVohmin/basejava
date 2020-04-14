@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1
  * @since 08.04.2020 17:00
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10_000;
 
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -29,30 +29,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume resume, Object index) {
+    public void doSave(Resume resume, Integer index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage is full", resume.getUuid());
         } else {
-            doInsert(resume, (Integer) index);
+            doInsert(resume, index);
             size++;
         }
     }
 
     @Override
-    public void doDelete(Object index) {
-        doDeleteElement((Integer) index);
+    public void doDelete(Integer index) {
+        doDeleteElement(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        storage[(Integer) index] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
@@ -66,8 +66,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void doInsert(Resume resume, int index);
